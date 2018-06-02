@@ -1556,6 +1556,10 @@ class SQLTests(ReusedSQLTestCase):
         self.assertRaises(IndexError, lambda: struct1[9])
         self.assertRaises(TypeError, lambda: struct1[9.9])
 
+        # Catch exception raised when using unicode field name
+        struct1 = StructType().add("f1", StringType(), True).add("f2", StringType(), True, None)
+        self.assertEqual(struct1[u"f1"], StringType())
+
     def test_parse_datatype_string(self):
         from pyspark.sql.types import _all_atomic_types, _parse_datatype_string
         for k, t in _all_atomic_types.items():
